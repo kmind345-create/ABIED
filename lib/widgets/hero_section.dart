@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../theme/app_theme.dart';
 import '../data/portfolio_data.dart';
-import 'tilt_3d.dart';
 import 'ecg_line.dart';
 import 'floating_icons.dart';
-import 'shine_effect.dart';
-import 'glass_panel.dart';
+import 'tilt_3d.dart';
 
 class HeroSection extends StatefulWidget {
   const HeroSection({super.key});
@@ -15,25 +13,7 @@ class HeroSection extends StatefulWidget {
   State<HeroSection> createState() => _HeroSectionState();
 }
 
-class _HeroSectionState extends State<HeroSection>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _pulse;
-
-  @override
-  void initState() {
-    super.initState();
-    _pulse = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1400),
-    )..repeat(reverse: true);
-  }
-
-  @override
-  void dispose() {
-    _pulse.dispose();
-    super.dispose();
-  }
-
+class _HeroSectionState extends State<HeroSection> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -58,93 +38,14 @@ class _HeroSectionState extends State<HeroSection>
           fit: BoxFit.cover,
         ),
       ),
-      // Shine sits as a child so it clips to the circle without
-      // cutting off the glow shadow drawn by the decoration above.
-      child: const ShineEffect(
-        shape: BoxShape.circle,
-        cycle: Duration(milliseconds: 4600),
-        intensity: 0.3,
-        child: SizedBox.expand(),
-      ),
     );
 
-    // The whole hero visual: a frosted glass slab holding the photo,
-    // with two smaller glass badges pinned to its corners.
+    // The hero visual is just the photo on its own — no glass frame,
+    // no corner badges, no shine sweep — but with its 3D tilt back.
     final glassVisual = Tilt3D(
       maxTiltDeg: 7,
       ambientAmplitude: 0.3,
-      child: Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.center,
-        children: [
-          GlassPanel(
-            borderRadius: BorderRadius.circular(36),
-            padding: EdgeInsets.all(isMobile ? 20 : 28),
-            child: circlePhoto,
-          ),
-          // "Available now" status badge — top-left, overlapping the glass edge.
-          Positioned(
-            top: -14,
-            left: isMobile ? -6 : -18,
-            child: GlassPanel(
-              borderRadius: BorderRadius.circular(20),
-              blur: 14,
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AnimatedBuilder(
-                    animation: _pulse,
-                    builder: (context, _) => Container(
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.greenAccent
-                            .withOpacity(0.55 + _pulse.value * 0.45),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.greenAccent
-                                .withOpacity(0.5 * _pulse.value),
-                            blurRadius: 8 * _pulse.value,
-                            spreadRadius: 1,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'AVAILABLE NOW',
-                    style: AppText.mono.copyWith(fontSize: 11, letterSpacing: 1),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          // Years-experience badge — bottom-right, overlapping the glass edge.
-          Positioned(
-            bottom: -16,
-            right: isMobile ? -8 : -20,
-            child: GlassPanel(
-              borderRadius: BorderRadius.circular(20),
-              blur: 14,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.monitor_heart_outlined, color: AppColors.sky, size: 18),
-                  const SizedBox(width: 8),
-                  Text(
-                    '${PortfolioData.stats.first.value} YEARS',
-                    style: AppText.mono.copyWith(fontSize: 12, color: AppColors.cream),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+      child: circlePhoto,
     )
         .animate()
         .fadeIn(duration: 700.ms, delay: 200.ms)

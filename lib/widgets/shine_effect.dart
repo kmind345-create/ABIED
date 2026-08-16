@@ -28,6 +28,13 @@ class ShineEffect extends StatefulWidget {
   /// glint, not a flash.
   final double intensity;
 
+  /// How many times the sweep plays before settling down for good.
+  /// Keeping this finite (instead of an infinite repeat) matters a
+  /// lot for performance when there are many cards on screen at
+  /// once — each running sweep is its own 60fps animation loop.
+  /// Pass -1 for a true infinite loop if a specific spot really needs it.
+  final int loopCount;
+
   const ShineEffect({
     super.key,
     required this.child,
@@ -37,6 +44,7 @@ class ShineEffect extends StatefulWidget {
     this.sweepFraction = 0.3,
     this.phase = 0,
     this.intensity = 0.22,
+    this.loopCount = 2,
   });
 
   @override
@@ -52,7 +60,18 @@ class _ShineEffectState extends State<ShineEffect>
     super.initState();
     _controller = AnimationController(vsync: this, duration: widget.cycle);
     _controller.value = widget.phase % 1.0;
-    _controller.repeat();
+    if (widget.loopCount < 0) {
+      _controller.repeat();
+    } else {
+      _runLoops();
+    }
+  }
+
+  Future<void> _runLoops() async {
+    for (int i = 0; i < widget.loopCount; i++) {
+      if (!mounted) return;
+      await _controller.forward(from: 0);
+    }
   }
 
   @override

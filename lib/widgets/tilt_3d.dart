@@ -32,7 +32,7 @@ class Tilt3D extends StatefulWidget {
     required this.child,
     this.maxTiltDeg = 8,
     this.scaleOnHover = 1.02,
-    this.ambient = true,
+    this.ambient = false,
     this.ambientAmplitude = 0.5,
     this.ambientPeriod = 6,
     this.phase = 0,

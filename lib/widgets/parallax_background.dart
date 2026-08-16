@@ -37,12 +37,10 @@ class _ParallaxBackgroundState extends State<ParallaxBackground>
   late final AnimationController _drift;
 
   static const List<_OrbSpec> _orbs = [
-    _OrbSpec(dx: -0.7, dyStart: 0.05, size: 320, parallaxFactor: 0.06, color: AppColors.sky, opacity: 0.10),
-    _OrbSpec(dx: 0.8, dyStart: 0.22, size: 260, parallaxFactor: 0.11, color: AppColors.sand, opacity: 0.09),
-    _OrbSpec(dx: -0.55, dyStart: 0.42, size: 300, parallaxFactor: 0.05, color: AppColors.olive, opacity: 0.08),
-    _OrbSpec(dx: 0.65, dyStart: 0.60, size: 240, parallaxFactor: 0.14, color: AppColors.sky, opacity: 0.08),
-    _OrbSpec(dx: -0.3, dyStart: 0.80, size: 280, parallaxFactor: 0.08, color: AppColors.sand, opacity: 0.07),
-    _OrbSpec(dx: 0.4, dyStart: 0.97, size: 220, parallaxFactor: 0.12, color: AppColors.sky, opacity: 0.09),
+    _OrbSpec(dx: -0.7, dyStart: 0.05, size: 300, parallaxFactor: 0.06, color: AppColors.sky, opacity: 0.10),
+    _OrbSpec(dx: 0.8, dyStart: 0.30, size: 240, parallaxFactor: 0.11, color: AppColors.sand, opacity: 0.09),
+    _OrbSpec(dx: -0.5, dyStart: 0.60, size: 260, parallaxFactor: 0.08, color: AppColors.olive, opacity: 0.08),
+    _OrbSpec(dx: 0.5, dyStart: 0.90, size: 220, parallaxFactor: 0.12, color: AppColors.sky, opacity: 0.08),
   ];
 
   @override
@@ -51,26 +49,16 @@ class _ParallaxBackgroundState extends State<ParallaxBackground>
     // A very slow ambient breathing loop so the background never feels
     // fully static even before the user starts scrolling.
     _drift = AnimationController(vsync: this, duration: const Duration(seconds: 40))..repeat();
-    widget.scrollController.addListener(_onScroll);
-  }
-
-  void _onScroll() {
-    if (mounted) setState(() {});
   }
 
   @override
   void dispose() {
-    widget.scrollController.removeListener(_onScroll);
     _drift.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final offset = widget.scrollController.hasClients
-        ? widget.scrollController.offset
-        : 0.0;
-
     return IgnorePointer(
       child: ClipRect(
         child: Container(
@@ -83,10 +71,17 @@ class _ParallaxBackgroundState extends State<ParallaxBackground>
               // smoothly as the page keeps scrolling.
               final loopHeight = h * 1.6;
 
+              // One shared listenable drives both the slow idle drift and
+              // the scroll-based parallax shift, so scrolling triggers a
+              // single lightweight rebuild here instead of stacking an
+              // extra setState on top of an already-running animation.
               return AnimatedBuilder(
-                animation: _drift,
+                animation: Listenable.merge([_drift, widget.scrollController]),
                 builder: (context, _) {
                   final breathe = _drift.value * 2 * math.pi;
+                  final offset = widget.scrollController.hasClients
+                      ? widget.scrollController.offset
+                      : 0.0;
                   return Stack(
                     clipBehavior: Clip.none,
                     children: [

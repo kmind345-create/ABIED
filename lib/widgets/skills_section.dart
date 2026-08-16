@@ -49,91 +49,108 @@ class _SkillsSectionState extends State<SkillsSection> {
           children: [
             const SectionHeading(eyebrow: 'EXPERTISE', title: 'What I bring to a shift'),
             const SizedBox(height: 36),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: PortfolioData.skills.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: cols,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
-                childAspectRatio: isMobile ? 2.2 : 1.35,
+            if (cols == 1)
+              // Single column on mobile: let each card size itself to its
+              // own text instead of forcing a fixed aspect-ratio box —
+              // that's what was clipping the bottom line of longer
+              // descriptions before.
+              Column(
+                children: [
+                  for (int i = 0; i < PortfolioData.skills.length; i++) ...[
+                    if (i > 0) const SizedBox(height: 20),
+                    _buildCard(context, i),
+                  ],
+                ],
+              )
+            else
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: PortfolioData.skills.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: cols,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20,
+                  childAspectRatio: 1.35,
+                ),
+                itemBuilder: (context, i) => _buildCard(context, i),
               ),
-              itemBuilder: (context, i) {
-                final s = PortfolioData.skills[i];
-                final active = _activeIndex == i;
-                return GestureDetector(
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    setState(() => _activeIndex = active ? null : i);
-                  },
-                  child: Tilt3D(
-                    maxTiltDeg: 6,
-                    ambientAmplitude: 0.35,
-                    phase: i * 1.1,
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 260),
-                      curve: Curves.easeOut,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: active ? AppColors.navyLighter : AppColors.navy,
-                        border: Border.all(
-                          color: active
-                              ? AppColors.sky.withOpacity(0.75)
-                              : AppColors.sky.withOpacity(0.15),
-                          width: active ? 1.6 : 1,
-                        ),
-                        boxShadow: active
-                            ? [
-                                BoxShadow(
-                                  color: AppColors.sky.withOpacity(0.28),
-                                  blurRadius: 26,
-                                  spreadRadius: 1,
-                                ),
-                              ]
-                            : [],
-                      ),
-                      // Shine is a child of the decorated box (not a
-                      // wrapper around it) so its clip never cuts off
-                      // the glow shadow above.
-                      child: ShineEffect(
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(16),
-                        phase: i * 0.22,
-                        child: Padding(
-                          padding: const EdgeInsets.all(22),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AnimatedScale(
-                                scale: active ? 1.12 : 1.0,
-                                duration: const Duration(milliseconds: 260),
-                                curve: Curves.easeOutBack,
-                                child: Icon(
-                                  _iconMap[s.icon] ?? Icons.circle,
-                                  color: AppColors.sky,
-                                  size: 32,
-                                ),
-                              ),
-                              const SizedBox(height: 14),
-                              Text(
-                                s.title,
-                                style: AppText.display.copyWith(fontSize: 20, fontWeight: FontWeight.w600),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(s.desc, style: AppText.body.copyWith(fontSize: 15)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ).animate().fadeIn(delay: (90 * i).ms).slideY(begin: 0.15, end: 0);
-              },
-            ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildCard(BuildContext context, int i) {
+    final s = PortfolioData.skills[i];
+    final active = _activeIndex == i;
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        setState(() => _activeIndex = active ? null : i);
+      },
+      child: Tilt3D(
+        maxTiltDeg: 6,
+        ambientAmplitude: 0.35,
+        phase: i * 1.1,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 260),
+          curve: Curves.easeOut,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: active ? AppColors.navyLighter : AppColors.navy,
+            border: Border.all(
+              color: active
+                  ? AppColors.sky.withOpacity(0.75)
+                  : AppColors.sky.withOpacity(0.15),
+              width: active ? 1.6 : 1,
+            ),
+            boxShadow: active
+                ? [
+                    BoxShadow(
+                      color: AppColors.sky.withOpacity(0.28),
+                      blurRadius: 26,
+                      spreadRadius: 1,
+                    ),
+                  ]
+                : [],
+          ),
+          // Shine is a child of the decorated box (not a
+          // wrapper around it) so its clip never cuts off
+          // the glow shadow above.
+          child: ShineEffect(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(16),
+            phase: i * 0.22,
+            child: Padding(
+              padding: const EdgeInsets.all(22),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AnimatedScale(
+                    scale: active ? 1.12 : 1.0,
+                    duration: const Duration(milliseconds: 260),
+                    curve: Curves.easeOutBack,
+                    child: Icon(
+                      _iconMap[s.icon] ?? Icons.circle,
+                      color: AppColors.sky,
+                      size: 32,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    s.title,
+                    style: AppText.display.copyWith(fontSize: 20, fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(s.desc, style: AppText.body.copyWith(fontSize: 15)),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    ).animate().fadeIn(delay: (90 * i).ms).slideY(begin: 0.15, end: 0);
   }
 }

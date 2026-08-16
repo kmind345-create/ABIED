@@ -30,29 +30,52 @@ class CertificationsSection extends StatelessWidget {
             const SectionHeading(eyebrow: 'CREDENTIALS', title: 'Certifications'),
             const SizedBox(height: 8),
             Text(
-              'Tap a badge to flip it.',
+              isMobile ? 'Swipe to browse, tap a badge to flip it.' : 'Tap a badge to flip it.',
               style: AppText.body.copyWith(fontSize: 15, color: AppColors.sand),
             ),
             const SizedBox(height: 32),
-            Wrap(
-              spacing: 24,
-              runSpacing: 24,
-              children: [
-                for (int i = 0; i < PortfolioData.certifications.length; i++)
-                  _buildBadge(PortfolioData.certifications[i])
-                      .animate()
-                      .fadeIn(delay: (120 * i).ms)
-                      .scale(begin: const Offset(0.9, 0.9)),
-              ],
-            ),
+            if (isMobile)
+              // Horizontal, swipeable row so badges sit side by side
+              // instead of stacking down the whole screen.
+              SizedBox(
+                height: 260,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: PortfolioData.certifications.length,
+                  itemBuilder: (context, i) => Padding(
+                    padding: EdgeInsets.only(
+                      right: i == PortfolioData.certifications.length - 1 ? 0 : 18,
+                    ),
+                    child: _buildBadge(PortfolioData.certifications[i], compact: true)
+                        .animate()
+                        .fadeIn(delay: (120 * i).ms)
+                        .scale(begin: const Offset(0.9, 0.9)),
+                  ),
+                ),
+              )
+            else
+              Wrap(
+                spacing: 24,
+                runSpacing: 24,
+                children: [
+                  for (int i = 0; i < PortfolioData.certifications.length; i++)
+                    _buildBadge(PortfolioData.certifications[i])
+                        .animate()
+                        .fadeIn(delay: (120 * i).ms)
+                        .scale(begin: const Offset(0.9, 0.9)),
+                ],
+              ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildBadge(CertItem cert) {
+  Widget _buildBadge(CertItem cert, {bool compact = false}) {
     return FlipBadgeCard(
+      width: compact ? 180 : 220,
+      height: compact ? 260 : 280,
       front: BadgeFace(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -62,7 +85,7 @@ class CertificationsSection extends StatelessWidget {
             const Spacer(),
             Text(
               cert.title,
-              style: AppText.display.copyWith(fontSize: 34, fontWeight: FontWeight.w700),
+              style: AppText.display.copyWith(fontSize: compact ? 28 : 34, fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 6),
             Text(cert.subtitle, style: AppText.body.copyWith(fontSize: 14.5)),
