@@ -1,0 +1,1 @@
+ D:\\FLUTTER\\Web\ apps\ projects\\nurse_portfolio_flutter\\nurse_portfolio\\build\\web\\manifest.json:  D:\\FLUTTER\\Web\ apps\ projects\\nurse_portfolio_flutter\\nurse_portfolio\\web\\index.html D:\\FLUTTER\\Web\ apps\ projects\\nurse_portfolio_flutter\\nurse_portfolio\\web\\manifest.json
