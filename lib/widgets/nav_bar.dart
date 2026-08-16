@@ -26,34 +26,35 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: AppColors.navy.withOpacity(0.92),
       elevation: 0,
-      titleSpacing: isMobile ? 16 : 80,
-      title: Row(
-        children: [
-          Icon(Icons.health_and_safety_outlined, color: AppColors.sky, size: 20),
-          const SizedBox(width: 8),
-          Flexible(
-            child: Text(
-              PortfolioData.name,
-              overflow: TextOverflow.ellipsis,
-              style: AppText.display.copyWith(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
-          ),
-        ],
-      ),
-      actions: isMobile
-          ? [
-              Builder(
-                builder: (context) => IconButton(
-                  icon: Icon(Icons.menu_rounded, color: AppColors.cream),
-                  splashRadius: 22,
-                  onPressed: () {
-                    HapticFeedback.lightImpact();
-                    Scaffold.of(context).openEndDrawer();
-                  },
-                ),
+      automaticallyImplyLeading: false,
+      centerTitle: isMobile,
+      titleSpacing: isMobile ? 0 : 80,
+      title: isMobile
+          ? Builder(
+              builder: (context) => IconButton(
+                icon: Icon(Icons.menu_rounded, color: AppColors.cream),
+                splashRadius: 22,
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Scaffold.of(context).openEndDrawer();
+                },
               ),
-              const SizedBox(width: 4),
-            ]
+            )
+          : Row(
+              children: [
+                Icon(Icons.health_and_safety_outlined, color: AppColors.sky, size: 20),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    PortfolioData.name,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppText.display.copyWith(fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ],
+            ),
+      actions: isMobile
+          ? null
           : [
               for (final entry in sectionKeys.entries)
                 TextButton(

@@ -1,11 +1,11 @@
 {
-    "name": "Specialist Nurse Portfolio",
-    "short_name": "Nurse Portfolio",
+    "name": "ABIED",
+    "short_name": "ABIED",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0F1526",
     "theme_color": "#0F1526",
-    "description": "Specialist Nurse — professional portfolio",
+    "description": "ABIED",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": []

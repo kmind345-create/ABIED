@@ -18,7 +18,7 @@ class _HeroSectionState extends State<HeroSection> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final isMobile = Breakpoints.isMobile(width);
-    final photoSize = isMobile ? 200.0 : 280.0;
+    final photoSize = isMobile ? 240.0 : 280.0;
 
     final circlePhoto = Container(
       width: photoSize,
@@ -56,7 +56,7 @@ class _HeroSectionState extends State<HeroSection> {
           isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
         Text(
-          'SPECIALIST NURSE PORTFOLIO',
+          'SPECIALIST NURSE',
           style: AppText.mono.copyWith(fontSize: 13.5, letterSpacing: 3),
         ).animate().fadeIn(delay: 150.ms).slideY(begin: 0.3, end: 0),
         const SizedBox(height: 14),
@@ -64,7 +64,7 @@ class _HeroSectionState extends State<HeroSection> {
           PortfolioData.name,
           textAlign: isMobile ? TextAlign.center : TextAlign.left,
           style: AppText.display.copyWith(
-            fontSize: isMobile ? 48 : 74,
+            fontSize: isMobile ? 36 : 74,
           ),
         ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.3, end: 0),
         const SizedBox(height: 6),
