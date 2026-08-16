@@ -112,14 +112,16 @@ class _Tilt3DState extends State<Tilt3D> with SingleTickerProviderStateMixin {
                     dy = 0;
                     scale = 1.0;
                   }
-                  return Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.identity()
-                      ..setEntry(3, 2, 0.0012) // perspective
-                      ..rotateX(-dy * widget.maxTiltDeg * math.pi / 180)
-                      ..rotateY(dx * widget.maxTiltDeg * math.pi / 180)
-                      ..scale(scale),
-                    child: child,
+                  return RepaintBoundary(
+                    child: Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.0012) // perspective
+                        ..rotateX(-dy * widget.maxTiltDeg * math.pi / 180)
+                        ..rotateY(dx * widget.maxTiltDeg * math.pi / 180)
+                        ..scale(scale),
+                      child: child,
+                    ),
                   );
                 },
                 child: widget.child,

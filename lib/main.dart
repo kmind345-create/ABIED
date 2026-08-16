@@ -8,7 +8,6 @@ import 'widgets/experience_section.dart';
 import 'widgets/certifications_section.dart';
 import 'widgets/contact_section.dart';
 import 'widgets/nav_bar.dart';
-import 'widgets/mobile_drawer.dart';
 import 'widgets/scroll_progress_bar.dart';
 import 'widgets/back_to_top_button.dart';
 import 'widgets/parallax_background.dart';
@@ -80,6 +79,14 @@ class _PortfolioHomeState extends State<PortfolioHome> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Warm the profile photo into the image cache before it's first
+    // painted, so the hero doesn't pop in a frame late.
+    precacheImage(const AssetImage('assets/images/profile.png'), context);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
@@ -91,7 +98,6 @@ class _PortfolioHomeState extends State<PortfolioHome> {
           ],
         ),
       ),
-      endDrawer: MobileDrawer(sectionKeys: _sections, onSelect: _scrollTo),
       floatingActionButton: BackToTopButton(controller: _scrollController),
       body: Stack(
         children: [

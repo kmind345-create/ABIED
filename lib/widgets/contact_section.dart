@@ -86,6 +86,7 @@ class ContactSection extends StatelessWidget {
             const SizedBox(height: 56),
             Text(
               '© ${DateTime.now().year} ${PortfolioData.name} — ${PortfolioData.title}',
+              textAlign: TextAlign.center,
               style: AppText.mono.copyWith(fontSize: 12.5, color: AppColors.sand),
             ),
           ],

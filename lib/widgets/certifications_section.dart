@@ -78,11 +78,10 @@ class CertificationsSection extends StatelessWidget {
       height: compact ? 260 : 280,
       front: BadgeFace(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Icon(Icons.verified_outlined, color: AppColors.sky, size: 32),
-            const Spacer(),
+            const SizedBox(height: 22),
             Text(
               cert.title,
               style: AppText.display.copyWith(fontSize: compact ? 28 : 34, fontWeight: FontWeight.w700),
@@ -97,7 +96,6 @@ class CertificationsSection extends StatelessWidget {
       back: BadgeFace(
         accent: true,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('ISSUER', style: AppText.mono.copyWith(fontSize: 11, color: AppColors.sky)),

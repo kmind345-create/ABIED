@@ -5,6 +5,7 @@ import '../data/portfolio_data.dart';
 import 'ecg_line.dart';
 import 'floating_icons.dart';
 import 'tilt_3d.dart';
+import 'icu_badge.dart';
 
 class HeroSection extends StatefulWidget {
   const HeroSection({super.key});
@@ -18,19 +19,19 @@ class _HeroSectionState extends State<HeroSection> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final isMobile = Breakpoints.isMobile(width);
-    final photoSize = isMobile ? 240.0 : 280.0;
+    final photoSize = isMobile ? 280.0 : 320.0;
 
     final circlePhoto = Container(
       width: photoSize,
       height: photoSize,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: AppColors.sky.withOpacity(0.55), width: 2),
+        border: Border.all(color: AppColors.sky.withOpacity(0.55), width: 3.5),
         boxShadow: [
           BoxShadow(
-            color: AppColors.sky.withOpacity(0.3),
-            blurRadius: 50,
-            spreadRadius: 2,
+            color: AppColors.sky.withOpacity(0.35),
+            blurRadius: 80,
+            spreadRadius: 6,
           ),
         ],
         image: const DecorationImage(
@@ -40,12 +41,31 @@ class _HeroSectionState extends State<HeroSection> {
       ),
     );
 
+    final photoWithBadge = RepaintBoundary(
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.center,
+        children: [
+          circlePhoto,
+          Positioned(
+            bottom: -14,
+            child: const IcuBadge()
+                .animate(delay: 900.ms)
+                .fadeIn(duration: 500.ms)
+                .slideY(begin: 0.4, end: 0)
+                .then()
+                .shimmer(duration: 1400.ms, color: AppColors.sky.withOpacity(0.35)),
+          ),
+        ],
+      ),
+    );
+
     // The hero visual is just the photo on its own — no glass frame,
     // no corner badges, no shine sweep — but with its 3D tilt back.
     final glassVisual = Tilt3D(
       maxTiltDeg: 7,
       ambientAmplitude: 0.3,
-      child: circlePhoto,
+      child: photoWithBadge,
     )
         .animate()
         .fadeIn(duration: 700.ms, delay: 200.ms)
@@ -121,7 +141,7 @@ class _HeroSectionState extends State<HeroSection> {
       ),
       child: Stack(
         children: [
-          const Positioned.fill(child: FloatingIcons()),
+          const Positioned.fill(child: RepaintBoundary(child: FloatingIcons())),
           Column(
             children: [
               content,

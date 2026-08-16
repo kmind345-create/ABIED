@@ -36,14 +36,16 @@ class _EcgLineState extends State<EcgLine> with SingleTickerProviderStateMixin {
     return SizedBox(
       height: widget.height,
       width: double.infinity,
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, _) {
-          return CustomPaint(
-            painter: _EcgPainter(progress: _controller.value),
-            size: Size.infinite,
-          );
-        },
+      child: RepaintBoundary(
+        child: AnimatedBuilder(
+          animation: _controller,
+          builder: (context, _) {
+            return CustomPaint(
+              painter: _EcgPainter(progress: _controller.value),
+              size: Size.infinite,
+            );
+          },
+        ),
       ),
     );
   }
@@ -93,9 +95,9 @@ class _EcgPainter extends CustomPainter {
     final glowPaint = Paint()
       ..color = AppColors.sky.withOpacity(0.35)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 5
+      ..strokeWidth = 4
       ..strokeCap = StrokeCap.round
-      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 6);
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
     canvas.drawPath(path, glowPaint);
 
     // crisp line on top

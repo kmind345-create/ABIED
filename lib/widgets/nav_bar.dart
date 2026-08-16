@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../theme/app_theme.dart';
 import '../data/portfolio_data.dart';
+import 'mobile_drawer.dart';
 
 class NavBar extends StatelessWidget implements PreferredSizeWidget {
   final Map<String, GlobalKey> sectionKeys;
@@ -36,7 +37,11 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
                 splashRadius: 22,
                 onPressed: () {
                   HapticFeedback.lightImpact();
-                  Scaffold.of(context).openEndDrawer();
+                  showCenteredMenu(
+                    context,
+                    sectionKeys: sectionKeys,
+                    onSelect: _scrollTo,
+                  );
                 },
               ),
             )
@@ -54,7 +59,7 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
               ],
             ),
       actions: isMobile
-          ? null
+          ? []
           : [
               for (final entry in sectionKeys.entries)
                 TextButton(
