@@ -88,16 +88,21 @@ class _PortfolioHomeState extends State<PortfolioHome> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final isMobile = Breakpoints.isMobile(width);
+
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(64 + 2.5),
-        child: Column(
-          children: [
-            NavBar(sectionKeys: _sections),
-            ScrollProgressBar(controller: _scrollController),
-          ],
-        ),
-      ),
+      appBar: isMobile
+          ? null
+          : PreferredSize(
+              preferredSize: const Size.fromHeight(64 + 2.5),
+              child: Column(
+                children: [
+                  NavBar(sectionKeys: _sections),
+                  ScrollProgressBar(controller: _scrollController),
+                ],
+              ),
+            ),
       floatingActionButton: BackToTopButton(controller: _scrollController),
       body: Stack(
         children: [
@@ -135,6 +140,16 @@ class _PortfolioHomeState extends State<PortfolioHome> {
               ],
             ),
           ),
+          if (isMobile)
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: FloatingNavPill(sectionKeys: _sections),
+                ),
+              ),
+            ),
         ],
       ),
     );

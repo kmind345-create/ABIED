@@ -29,18 +29,14 @@ class AppColors {
 class AppText {
   AppText._();
 
-  static const String _poppins = 'Poppins';
-
-  static TextStyle display = TextStyle(
-    fontFamily: _poppins,
+  static TextStyle display = GoogleFonts.poppins(
     fontWeight: FontWeight.w600,
     color: AppColors.cream,
     height: 1.15,
     letterSpacing: -0.3,
   );
 
-  static TextStyle body = TextStyle(
-    fontFamily: _poppins,
+  static TextStyle body = GoogleFonts.poppins(
     fontWeight: FontWeight.w400,
     fontSize: 16,
     color: AppColors.cream.withOpacity(0.82),
