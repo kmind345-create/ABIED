@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// Palette sampled directly from the portfolio photo:
 /// - navy: the scrub uniform
@@ -29,21 +28,24 @@ class AppColors {
 class AppText {
   AppText._();
 
-  static TextStyle display = GoogleFonts.poppins(
+  static TextStyle display = const TextStyle(
+    fontFamily: 'Poppins',
     fontWeight: FontWeight.w600,
     color: AppColors.cream,
     height: 1.15,
     letterSpacing: -0.3,
   );
 
-  static TextStyle body = GoogleFonts.poppins(
+  static TextStyle body = TextStyle(
+    fontFamily: 'Poppins',
     fontWeight: FontWeight.w400,
     fontSize: 16,
     color: AppColors.cream.withOpacity(0.82),
     height: 1.6,
   );
 
-  static TextStyle mono = GoogleFonts.jetBrainsMono(
+  static const TextStyle mono = TextStyle(
+    fontFamily: 'JetBrainsMono',
     fontWeight: FontWeight.w500,
     color: AppColors.sky,
     letterSpacing: 0.5,
