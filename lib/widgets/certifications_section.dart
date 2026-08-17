@@ -79,16 +79,17 @@ class CertificationsSection extends StatelessWidget {
       height: compact ? 260 : 280,
       front: BadgeFace(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(Icons.verified_outlined, color: AppColors.sky, size: 32),
             const SizedBox(height: 22),
             Text(
               cert.title,
+              textAlign: TextAlign.center,
               style: AppText.display.copyWith(fontSize: compact ? 28 : 34, fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 6),
-            Text(cert.subtitle, style: AppText.body.copyWith(fontSize: 14.5)),
+            Text(cert.subtitle, textAlign: TextAlign.center, style: AppText.body.copyWith(fontSize: 14.5)),
             const Spacer(),
             Text('TAP TO FLIP', style: AppText.mono.copyWith(fontSize: 11, color: AppColors.sand)),
           ],
@@ -106,6 +107,23 @@ class CertificationsSection extends StatelessWidget {
             Text('YEAR', style: AppText.mono.copyWith(fontSize: 11, color: AppColors.sky)),
             const SizedBox(height: 6),
             Text(cert.year, style: AppText.body.copyWith(fontSize: 16.5, color: AppColors.cream)),
+            const SizedBox(height: 20),
+            Divider(color: AppColors.sky.withOpacity(0.18), height: 1),
+            const SizedBox(height: 20),
+            Text('STATUS', style: AppText.mono.copyWith(fontSize: 11, color: AppColors.sky)),
+            const SizedBox(height: 6),
+            Row(
+              children: [
+                Icon(Icons.check_circle, color: AppColors.sky, size: 16),
+                const SizedBox(width: 6),
+                Text(
+                  cert.credentialId,
+                  style: AppText.body.copyWith(fontSize: 14.5, color: AppColors.cream),
+                ),
+              ],
+            ),
+            const Spacer(),
+            Text('TAP TO FLIP', style: AppText.mono.copyWith(fontSize: 11, color: AppColors.sand)),
           ],
         ),
       ),

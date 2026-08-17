@@ -158,10 +158,12 @@ class CertItem {
   final String subtitle;
   final String issuer;
   final String year;
+  final String credentialId;
   const CertItem({
     required this.title,
     required this.subtitle,
     required this.issuer,
     required this.year,
+    this.credentialId = 'Active — no expiry',
   });
 }

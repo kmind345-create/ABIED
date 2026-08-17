@@ -14,7 +14,7 @@ class IcuBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
       decoration: BoxDecoration(
-        color: AppColors.navyLight,
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(30),
         border: Border.all(color: AppColors.sky.withOpacity(0.45), width: 1.4),
         boxShadow: [
@@ -33,10 +33,6 @@ class IcuBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // A tiny "live monitor" dot — pulses forever, like a
-          // vitals reading that never flatlines.
-          _PulseDot(),
-          const SizedBox(width: 8),
           Icon(Icons.monitor_heart_rounded, color: AppColors.sky, size: 15),
           const SizedBox(width: 6),
           Text(
@@ -46,40 +42,6 @@ class IcuBadge extends StatelessWidget {
               letterSpacing: 1.2,
               color: AppColors.cream,
               fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PulseDot extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 8,
-      height: 8,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(
-            width: 8,
-            height: 8,
-            decoration: const BoxDecoration(
-              color: Color(0xFF6FE39B), // vitals-monitor green
-              shape: BoxShape.circle,
-            ),
-          )
-              .animate(onPlay: (c) => c.repeat(reverse: true))
-              .scaleXY(begin: 1, end: 1.9, duration: 900.ms, curve: Curves.easeOut)
-              .fadeOut(begin: 0.9, duration: 900.ms),
-          Container(
-            width: 6,
-            height: 6,
-            decoration: const BoxDecoration(
-              color: Color(0xFF6FE39B),
-              shape: BoxShape.circle,
             ),
           ),
         ],

@@ -84,7 +84,7 @@ class _HeroSectionState extends State<HeroSection> {
           PortfolioData.name,
           textAlign: isMobile ? TextAlign.center : TextAlign.left,
           style: AppText.display.copyWith(
-            fontSize: isMobile ? 36 : 74,
+            fontSize: isMobile ? 40 : 80,
           ),
         ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.3, end: 0),
         const SizedBox(height: 6),
@@ -131,7 +131,7 @@ class _HeroSectionState extends State<HeroSection> {
       padding: EdgeInsets.only(
         left: isMobile ? 24 : 80,
         right: isMobile ? 24 : 80,
-        top: isMobile ? 170 : 100,
+        top: isMobile ? 110 : 100,
         bottom: isMobile ? 60 : 100,
       ),
       decoration: const BoxDecoration(

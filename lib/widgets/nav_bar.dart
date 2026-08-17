@@ -46,7 +46,7 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
             onPressed: () => _scrollTo(entry.value),
             child: Text(
               entry.key,
-              style: AppText.body.copyWith(fontSize: 14.5, color: AppColors.cream),
+              style: AppText.body.copyWith(fontSize: 12.5, color: AppColors.cream),
             ),
           ),
         const SizedBox(width: 32),
@@ -102,7 +102,7 @@ class FloatingNavPill extends StatelessWidget {
             child: Text(
               PortfolioData.navShortName,
               overflow: TextOverflow.ellipsis,
-              style: AppText.mono.copyWith(
+              style: AppText.body.copyWith(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
                 color: AppColors.sand,
