@@ -115,7 +115,7 @@ class _PortfolioHomeState extends State<PortfolioHome> {
             controller: _scrollController,
             child: Column(
               children: [
-                const HeroSection(),
+                HeroSection(scrollController: _scrollController),
                 StatsBar(scrollController: _scrollController),
                 Container(
                   key: _aboutKey,

@@ -7,13 +7,42 @@ import 'floating_icons.dart';
 import 'tilt_3d.dart';
 
 class HeroSection extends StatefulWidget {
-  const HeroSection({super.key});
+  final ScrollController scrollController;
+  const HeroSection({super.key, required this.scrollController});
 
   @override
   State<HeroSection> createState() => _HeroSectionState();
 }
 
 class _HeroSectionState extends State<HeroSection> {
+  double _scrollProgress = 0;
+
+  // How many pixels of scrolling it takes for the hero to fully
+  // fade/slide away — keeps the effect tied to the hero's own height
+  // rather than a fixed magic number.
+  static const double _fadeDistance = 420;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    widget.scrollController.removeListener(_onScroll);
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (!widget.scrollController.hasClients) return;
+    final offset = widget.scrollController.offset.clamp(0, _fadeDistance);
+    final progress = offset / _fadeDistance;
+    if (progress != _scrollProgress) {
+      setState(() => _scrollProgress = progress.toDouble());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -38,7 +67,25 @@ class _HeroSectionState extends State<HeroSection> {
           fit: BoxFit.cover,
         ),
       ),
-    );
+    )
+        .animate(onPlay: (c) => c.repeat(reverse: true))
+        .custom(
+          duration: 2600.ms,
+          curve: Curves.easeInOut,
+          builder: (context, value, child) => Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.sky.withOpacity(0.18 + value * 0.16),
+                  blurRadius: 60 + value * 30,
+                  spreadRadius: value * 6,
+                ),
+              ],
+            ),
+            child: child,
+          ),
+        );
 
     final photoWithBadge = RepaintBoundary(
       child: circlePhoto,
@@ -128,14 +175,20 @@ class _HeroSectionState extends State<HeroSection> {
       child: Stack(
         children: [
           const Positioned.fill(child: RepaintBoundary(child: FloatingIcons())),
-          Column(
-            children: [
-              content,
-              const SizedBox(height: 56),
-              const EcgLine(height: 50)
-                  .animate()
-                  .fadeIn(delay: 800.ms, duration: 800.ms),
-            ],
+          Transform.translate(
+            offset: Offset(0, _scrollProgress * 70),
+            child: Opacity(
+              opacity: 1 - (_scrollProgress * 0.85),
+              child: Column(
+                children: [
+                  content,
+                  const SizedBox(height: 56),
+                  const EcgLine(height: 50)
+                      .animate()
+                      .fadeIn(delay: 800.ms, duration: 800.ms),
+                ],
+              ),
+            ),
           ),
         ],
       ),
