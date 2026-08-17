@@ -128,9 +128,11 @@ class _HeroSectionState extends State<HeroSection> {
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 24 : 80,
-        vertical: isMobile ? 60 : 100,
+      padding: EdgeInsets.only(
+        left: isMobile ? 24 : 80,
+        right: isMobile ? 24 : 80,
+        top: isMobile ? 170 : 100,
+        bottom: isMobile ? 60 : 100,
       ),
       decoration: const BoxDecoration(
         gradient: RadialGradient(

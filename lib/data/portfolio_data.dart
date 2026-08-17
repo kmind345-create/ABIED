@@ -5,6 +5,8 @@
 class PortfolioData {
   // ---- Identity -------------------------------------------------
   static const String name = 'Ahmed Mohamed Abdullah';
+  // Short form shown in the compact mobile nav pill (top of the page).
+  static const String navShortName = 'Ahmed Abied';
   static const String title = 'Specialist Nurse';
   static const String subtitle =
       'Critical Care & Emergency Nursing — Mit Ghamr, Egypt';

@@ -76,13 +76,6 @@ class FloatingNavPill extends StatelessWidget {
     }
   }
 
-  String get _initials {
-    final parts = PortfolioData.name.trim().split(RegExp(r'\s+'));
-    if (parts.isEmpty) return '';
-    if (parts.length == 1) return parts.first.substring(0, 1).toUpperCase();
-    return (parts[0].substring(0, 1) + parts[1].substring(0, 1)).toUpperCase();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -103,13 +96,14 @@ class FloatingNavPill extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 34,
             height: 34,
             alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Text(
-              _initials,
+              PortfolioData.navShortName,
+              overflow: TextOverflow.ellipsis,
               style: AppText.mono.copyWith(
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.w700,
                 color: AppColors.sand,
               ),

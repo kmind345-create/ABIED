@@ -35,19 +35,20 @@ class CertificationsSection extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             if (isMobile)
-              // Horizontal, swipeable row so badges sit side by side
-              // instead of stacking down the whole screen.
+              // One badge per "page" so it swipes cleanly from card to
+              // card instead of showing a sliver of the next one.
               SizedBox(
                 height: 260,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
+                child: PageView.builder(
+                  controller: PageController(viewportFraction: 1),
                   physics: const BouncingScrollPhysics(),
                   itemCount: PortfolioData.certifications.length,
-                  itemBuilder: (context, i) => Padding(
-                    padding: EdgeInsets.only(
-                      right: i == PortfolioData.certifications.length - 1 ? 0 : 18,
-                    ),
-                    child: _buildBadge(PortfolioData.certifications[i], compact: true)
+                  itemBuilder: (context, i) => Center(
+                    child: _buildBadge(
+                      PortfolioData.certifications[i],
+                      compact: true,
+                      width: (width - 48).clamp(0, 320),
+                    )
                         .animate()
                         .fadeIn(delay: (120 * i).ms)
                         .scale(begin: const Offset(0.9, 0.9)),
@@ -72,9 +73,9 @@ class CertificationsSection extends StatelessWidget {
     );
   }
 
-  Widget _buildBadge(CertItem cert, {bool compact = false}) {
+  Widget _buildBadge(CertItem cert, {bool compact = false, double? width}) {
     return FlipBadgeCard(
-      width: compact ? 180 : 220,
+      width: width ?? (compact ? 180 : 220),
       height: compact ? 260 : 280,
       front: BadgeFace(
         child: Column(
