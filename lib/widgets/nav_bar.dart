@@ -105,7 +105,7 @@ class FloatingNavPill extends StatelessWidget {
               style: AppText.body.copyWith(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: AppColors.sand,
+                color: Colors.white,
               ),
             ),
           ),

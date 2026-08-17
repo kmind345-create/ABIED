@@ -76,7 +76,7 @@ class _HeroSectionState extends State<HeroSection> {
           isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
         Text(
-          'SPECIALIST NURSE',
+          'ICU NURSE',
           style: AppText.mono.copyWith(fontSize: 13.5, letterSpacing: 3),
         ).animate().fadeIn(delay: 150.ms).slideY(begin: 0.3, end: 0),
         const SizedBox(height: 14),

@@ -98,12 +98,12 @@ class _DrawerItem extends StatelessWidget {
       onTap: onTap,
       downScale: 0.96,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 14),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         child: Text(
           label,
           textAlign: TextAlign.center,
           style: AppText.display.copyWith(
-            fontSize: 22,
+            fontSize: 17,
             fontWeight: FontWeight.w700,
             color: AppColors.cream,
           ),

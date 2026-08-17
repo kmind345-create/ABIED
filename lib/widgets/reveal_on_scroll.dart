@@ -8,7 +8,8 @@ class RevealOnScroll extends StatefulWidget {
   final ScrollController controller;
 
   /// Fraction of the viewport height at which the reveal fires —
-  /// 0.88 means "fire once the widget's top has crossed 88% down the screen".
+  /// 0.92 means "fire once the widget's top has crossed 92% down the screen"
+  /// (i.e. just as it starts entering the visible area from the bottom).
   final double triggerFraction;
 
   /// Fired once, at the moment the reveal animation starts — lets a
@@ -20,7 +21,7 @@ class RevealOnScroll extends StatefulWidget {
     super.key,
     required this.child,
     required this.controller,
-    this.triggerFraction = 0.88,
+    this.triggerFraction = 0.92,
     this.onReveal,
   });
 
@@ -34,14 +35,17 @@ class _RevealOnScrollState extends State<RevealOnScroll>
   late final AnimationController _anim;
   late final Animation<double> _fade;
   late final Animation<Offset> _slide;
+  late final Animation<double> _scale;
   bool _played = false;
 
   @override
   void initState() {
     super.initState();
-    _anim = AnimationController(vsync: this, duration: const Duration(milliseconds: 700));
+    _anim = AnimationController(vsync: this, duration: const Duration(milliseconds: 900));
     _fade = CurvedAnimation(parent: _anim, curve: Curves.easeOut);
-    _slide = Tween<Offset>(begin: const Offset(0, 40), end: Offset.zero)
+    _slide = Tween<Offset>(begin: const Offset(0, 64), end: Offset.zero)
+        .animate(CurvedAnimation(parent: _anim, curve: Curves.easeOutCubic));
+    _scale = Tween<double>(begin: 0.94, end: 1.0)
         .animate(CurvedAnimation(parent: _anim, curve: Curves.easeOutCubic));
     widget.controller.addListener(_check);
     // also check once right after first layout, in case it's already
@@ -81,7 +85,10 @@ class _RevealOnScrollState extends State<RevealOnScroll>
             opacity: _fade.value,
             child: Transform.translate(
               offset: _slide.value,
-              child: child,
+              child: Transform.scale(
+                scale: _scale.value,
+                child: child,
+              ),
             ),
           );
         },
