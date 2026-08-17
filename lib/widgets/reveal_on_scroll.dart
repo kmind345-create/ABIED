@@ -21,7 +21,7 @@ class RevealOnScroll extends StatefulWidget {
     super.key,
     required this.child,
     required this.controller,
-    this.triggerFraction = 0.92,
+    this.triggerFraction = 0.97,
     this.onReveal,
   });
 
@@ -41,11 +41,11 @@ class _RevealOnScrollState extends State<RevealOnScroll>
   @override
   void initState() {
     super.initState();
-    _anim = AnimationController(vsync: this, duration: const Duration(milliseconds: 900));
+    _anim = AnimationController(vsync: this, duration: const Duration(milliseconds: 1100));
     _fade = CurvedAnimation(parent: _anim, curve: Curves.easeOut);
-    _slide = Tween<Offset>(begin: const Offset(0, 64), end: Offset.zero)
+    _slide = Tween<Offset>(begin: const Offset(0, 110), end: Offset.zero)
         .animate(CurvedAnimation(parent: _anim, curve: Curves.easeOutCubic));
-    _scale = Tween<double>(begin: 0.94, end: 1.0)
+    _scale = Tween<double>(begin: 0.85, end: 1.0)
         .animate(CurvedAnimation(parent: _anim, curve: Curves.easeOutCubic));
     widget.controller.addListener(_check);
     // also check once right after first layout, in case it's already

@@ -5,7 +5,6 @@ import '../data/portfolio_data.dart';
 import 'ecg_line.dart';
 import 'floating_icons.dart';
 import 'tilt_3d.dart';
-import 'icu_badge.dart';
 
 class HeroSection extends StatefulWidget {
   const HeroSection({super.key});
@@ -42,22 +41,7 @@ class _HeroSectionState extends State<HeroSection> {
     );
 
     final photoWithBadge = RepaintBoundary(
-      child: Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.center,
-        children: [
-          circlePhoto,
-          Positioned(
-            bottom: -14,
-            child: const IcuBadge()
-                .animate(delay: 900.ms)
-                .fadeIn(duration: 500.ms)
-                .slideY(begin: 0.4, end: 0)
-                .then()
-                .shimmer(duration: 1400.ms, color: AppColors.sky.withOpacity(0.35)),
-          ),
-        ],
-      ),
+      child: circlePhoto,
     );
 
     // The hero visual is just the photo on its own — no glass frame,
